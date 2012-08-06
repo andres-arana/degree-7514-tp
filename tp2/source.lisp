@@ -24,6 +24,7 @@
     (if (null (lookup function-name environment))
       (cond
         ((equal function-name 'mapcar) (handle-mapcar-call arguments environment))
+        ((equal function-name 'apply) (handle-apply-call arguments environment))
         (t (call-builtin-function function-name arguments)))
       (evaluate-function-call (evaluate function-name environment) arguments environment))
     (evaluate (caddr function-name) (extended-environment (cadr function-name) arguments environment))))
@@ -103,6 +104,15 @@
   "Handles a MAPCAR function call"
   (let
     ((function-name (car arguments)) (elements (cadr arguments)))
-    (format t "Function name: ~a | Elements: ~a || " function-name elements)
-    (cons (evaluate-function-call function-name (car elements) environment) (evaluate-function-call 'mapcar (list function-name (cdr arguments)) environment))))
+    (cond
+      ((null elements) nil)
+      (t (cons
+           (evaluate-function-call function-name (list (car elements)) environment)
+           (handle-mapcar-call (list function-name (cdr elements)) environment))))))
+
+(defun handle-apply-call (arguments environment)
+  "Handles an APPLY function call"
+  (let
+    ((function-name (car arguments)) (call-arguments (cadr arguments)))
+    (evaluate-function-call function-name call-arguments environment)))
 
