@@ -1,4 +1,7 @@
-; Evaluation functions
+(defun seedoc (f)
+  "Checks the documentation for a given function"
+  (documentation f 'function))
+
 (defun evaluate (expression environment)
   "Evaluates a LISP expression in a given environment
 
