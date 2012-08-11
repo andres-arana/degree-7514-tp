@@ -193,7 +193,8 @@
   (cond
     ((null program) (reverse output))
     ((eq (caar program) 'printf) (handle-printf-statement program input memory output))
-    ((eq (caar program) 'scanf) (handle-scanf-statement program input memory output))))
+    ((eq (caar program) 'scanf) (handle-scanf-statement program input memory output))
+    (t (handle-var-assignment program input memory output))))
 
 (defun handle-printf-statement (program input memory output)
   "Special case of the execute-main function which works when the current
@@ -204,6 +205,44 @@
   "Special case of the execute-main function which works when the current
   statement is a scanf statement"
   (execute-main (cdr program) (cdr input) (assign-memory memory (cadar program) (car input)) output))
+
+(defun handle-var-assignment (program input memory output)
+  "Special case of the execute-main function which works when the current
+  statement is a variable assignment statement"
+  (if (equal (cadar program) '=)
+    (let ((value (evaluate-expression (caddar program) memory)))
+      (execute-main (cdr program) input (assign-memory memory (caar program) value) output))
+    (handle-composite-assignment program input memory output)))
+
+(defun handle-composite-assignment (program input memory output)
+  "Special case of the handle-var-assignment function which works when the
+  current statement is a composite assignment"
+  (cond
+    ((eq (caar program) '++)
+     (let ((var (cadar program)))
+       (execute-main (cons (list var '= (list var '+ 1)) (cdr program)) input memory output)))
+    ((eq (caar program) '--)
+     (let ((var (cadar program)))
+       (execute-main (cons (list var '= (list var '- 1)) (cdr program)) input memory output)))
+    ((eq (cadar program) '++)
+     (let ((var (caar program)))
+       (execute-main (cons (list var '= (list var '+ 1)) (cdr program)) input memory output)))
+    ((eq (caadar program) '--)
+     (let ((var (caar program)))
+       (execute-main (cons (list var '= (list var '- 1)) (cdr program)) input memory output)))
+    ((eq (cadar program) '+=)
+     (let ((var (caar program)))
+       (execute-main (cons (list var '= (list var '+ (caddar program))) (cdr program)) input memory output)))
+    ((eq (cadar program) '-=)
+     (let ((var (caar program)))
+       (execute-main (cons (list var '= (list var '- (caddar program))) (cdr program)) input memory output)))
+    ((eq (cadar program) '*=)
+     (let ((var (caar program)))
+       (execute-main (cons (list var '= (list var '* (caddar program))) (cdr program)) input memory output)))
+    ((eq (cadar program) '/=)
+     (let ((var (caar program)))
+       (execute-main (cons (list var '= (list var '/ (caddar program))) (cdr program)) input memory output)))
+    ))
 
 (defun evaluate-expression (expression memory &optional (operators nil) (operands nil))
   "Evaluates a C-like expression
