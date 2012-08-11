@@ -107,6 +107,38 @@
       ((x 5) (a 10) (b 20))"
   (cons (list name value) memory))
 
+(defun assign-memory (memory name value)
+  "Assigns the value of a memory entry
+
+  Params:
+    memory:
+      Memory map, mapping variable names to values.
+
+      Examples:
+        ((a 10) (b 20))
+
+    name:
+      Name of the entry to assign
+
+      Examples:
+        a
+
+    value:
+      Value to assign to the variable
+
+      Examples:
+        15
+
+  Returns:
+    The modified memory map.
+    
+    Examples:
+      ((a 15) (b 20))"
+  (cond
+    ((null memory) nil)
+    ((eq (caar memory) name) (cons (list name value) (cdr memory)))
+    (t (cons (car memory) (assign-memory (cdr memory) name value)))))
+
 (defun in-memory-value (memory name)
   "Obtains the value of a given memory entry
 
@@ -160,12 +192,18 @@
       (1)"
   (cond
     ((null program) (reverse output))
-    ((eq (caar program) 'printf) (handle-printf-statement program input memory output))))
+    ((eq (caar program) 'printf) (handle-printf-statement program input memory output))
+    ((eq (caar program) 'scanf) (handle-scanf-statement program input memory output))))
 
 (defun handle-printf-statement (program input memory output)
   "Special case of the execute-main function which works when the current
   statement is a printf statement"
   (execute-main (cdr program) input memory (cons (evaluate-expression (cadar program) memory) output)))
+
+(defun handle-scanf-statement (program input memory output)
+  "Special case of the execute-main function which works when the current
+  statement is a scanf statement"
+  (execute-main (cdr program) (cdr input) (assign-memory memory (cadar program) (car input)) output))
 
 (defun evaluate-expression (expression memory &optional (operators nil) (operands nil))
   "Evaluates a C-like expression
