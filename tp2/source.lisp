@@ -44,7 +44,7 @@
   "Extends the environment with the values of an argument list"
   (if (null argument-list)
     environment
-    (cons 
+    (cons
       (list (car argument-list) (car argument-values))
       (extended-environment (cdr argument-list) (cdr argument-values) environment))))
 
