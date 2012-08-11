@@ -131,7 +131,7 @@
 
   Returns:
     The modified memory map.
-    
+
     Examples:
       ((a 15) (b 20))"
   (cond
@@ -194,6 +194,7 @@
     ((null program) (reverse output))
     ((eq (caar program) 'printf) (handle-printf-statement program input memory output))
     ((eq (caar program) 'scanf) (handle-scanf-statement program input memory output))
+    ((eq (caar program) 'while) (handle-while-statement program input memory output))
     (t (handle-var-assignment program input memory output))))
 
 (defun handle-printf-statement (program input memory output)
@@ -205,6 +206,13 @@
   "Special case of the execute-main function which works when the current
   statement is a scanf statement"
   (execute-main (cdr program) (cdr input) (assign-memory memory (cadar program) (car input)) output))
+
+(defun handle-while-statement (program input memory output)
+  "Special case of the execute-main function which works when the current
+  statement is a while statement"
+  (if (equal (evaluate-expression (cadar program) memory) 0)
+    (execute-main (cdr program) input memory output)
+    (execute-main (append (caddar program) program) input memory output)))
 
 (defun handle-var-assignment (program input memory output)
   "Special case of the execute-main function which works when the current
@@ -227,7 +235,7 @@
     ((eq (cadar program) '++)
      (let ((var (caar program)))
        (execute-main (cons (list var '= (list var '+ 1)) (cdr program)) input memory output)))
-    ((eq (caadar program) '--)
+    ((eq (cadar program) '--)
      (let ((var (caar program)))
        (execute-main (cons (list var '= (list var '- 1)) (cdr program)) input memory output)))
     ((eq (cadar program) '+=)
