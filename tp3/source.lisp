@@ -195,6 +195,7 @@
     ((eq (caar program) 'printf) (handle-printf-statement program input memory output))
     ((eq (caar program) 'scanf) (handle-scanf-statement program input memory output))
     ((eq (caar program) 'while) (handle-while-statement program input memory output))
+    ((eq (caar program) 'if) (handle-if-statement program input memory output))
     (t (handle-var-assignment program input memory output))))
 
 (defun handle-printf-statement (program input memory output)
@@ -213,6 +214,15 @@
   (if (equal (evaluate-expression (cadar program) memory) 0)
     (execute-main (cdr program) input memory output)
     (execute-main (append (caddar program) program) input memory output)))
+
+(defun handle-if-statement (program input memory output)
+  "Special case of the execute-main function which works when the current
+  statement is an if statement"
+  (if (not (equal (evaluate-expression (cadar program) memory) 0))
+    (execute-main (append (caddar program) (cdr program)) input memory output)
+    (if (> (length (car program)) 3)
+      (execute-main (append (caddr (cddar program)) (cdr program)) input memory output)
+      (execute-main (cdr program) input memory output))))
 
 (defun handle-var-assignment (program input memory output)
   "Special case of the execute-main function which works when the current
