@@ -1,0 +1,125 @@
+\documentclass[a4paper,11pt]{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Paquetes utilizados
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Gráficos complejos
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{placeins}
+
+% Soporte para el lenguaje español
+\usepackage{textcomp}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\DeclareUnicodeCharacter{B0}{\textdegree}
+\usepackage[spanish]{babel}
+
+% Código fuente embebido
+\usepackage{listings}
+\usepackage{color}
+
+% Matemáticos
+\usepackage{amssymb,amsmath}
+
+% Tablas complejas
+\usepackage{multirow}
+
+% Formato de párrafo
+\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Título
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Título principal del documento.
+\title{\textbf{Trabajos y Ejercicios Prácticos}}
+
+% Información sobre los autores.
+\author{
+  \normalsize{1er. Cuatrimestre de 2012}                           \\
+  \normalsize{75.14 Lenguajes Formarles}                           \\
+  \normalsize{Facultad de Ingeniería, Universidad de Buenos Aires} \\ \\
+  Andrés Gastón Arana, \textit{P. 86.203}                          \\
+  \texttt{and2arana@gmail.com}
+}
+\date{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Documento
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+% ----------------------------------------------------------------------
+% Top matter
+% ----------------------------------------------------------------------
+\thispagestyle{empty}
+\maketitle
+
+\begin{abstract}
+
+  Este documento presenta el código fuente autodocumentado de las soluciones
+  desarrolladas a los trabajos prácticos y ejercicios de la materia (75.14)
+  Lenguajes Formales de la Universidad de Buenos Aires, Facultad de Ingeniería.
+
+\end{abstract}
+
+\clearpage
+
+\section{Introducción}
+
+En las siguientes secciones se incluye el únicamente el código fuente
+autodocumentado de los trabajos prácticos, de acuerdo a las guías de
+presentación para evaluación integradora establecidas por la cátedra.
+
+Todos los trabajos prácticos fueron desarrollados y probados en GNU CLISP 2.49,
+disponible gratuitamente en http://clisp.cons.org/.
+
+El código fuente está disponible en el repositorio ubicado en
+https://github.com/andres-arana/degree-7514-formales.
+
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+
+\lstset{
+  title=\lstname,
+  basicstyle=\footnotesize,
+  showspaces=false,
+  language=lisp,
+  commentstyle=\color{mygray},
+  showstringspaces=false,
+  breaklines=true,
+  numbers=left,
+  numbersep=5pt,
+  frame=single
+}
+
+\clearpage
+
+% ----------------------------------------------------------------------
+% Desarrollo
+% ----------------------------------------------------------------------
+
+\section{Trabajo Práctico 1: GPS}
+
+\lstinputlisting{tp1/source.lisp}
+\clearpage
+
+\section{Trabajo Práctico 2: Intérprete de LISP}
+
+\lstinputlisting{tp2/source.lisp}
+\clearpage
+
+\section{Trabajo Práctico 1: Intérprete de C}
+
+\lstinputlisting{tp3/source.lisp}
+\clearpage
+
+\section{Trabajo Práctico 1: N-Reinas}
+
+\lstinputlisting{tp4/source.lisp}
+\clearpage
+
+\end{document}
